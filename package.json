@@ -1,0 +1,49 @@
+{
+  "name": "shreya-pokharel-mern",
+  "version": "2.0.0",
+  "private": true,
+  "type": "module",
+  "engines": {
+    "node": ">=22.12 <23"
+  },
+  "scripts": {
+    "dev": "concurrently -k -n api,web \"npm:dev:server\" \"npm:dev:client\"",
+    "dev:server": "node --env-file-if-exists=.env --watch server/index.mjs",
+    "dev:client": "vite --config client/vite.config.js",
+    "build": "vite build --config client/vite.config.js",
+    "start": "node --env-file-if-exists=.env server/index.mjs",
+    "admin:password": "node --env-file-if-exists=.env scripts/set-password.mjs",
+    "test": "npm run test:api && npm run test:ui",
+    "test:api": "node --test --test-concurrency=1 tests/*.test.mjs",
+    "test:ui": "vitest run",
+    "migrate:proofs": "node --env-file-if-exists=.env scripts/migrate-proofs.mjs"
+  },
+  "dependencies": {
+    "cloudinary": "^2.11.0",
+    "express": "^5.3.0",
+    "helmet": "^8.3.0",
+    "mongoose": "^9.11.2",
+    "multer": "^2.4.0",
+    "react": "^19.3.1",
+    "react-dom": "^19.3.1",
+    "react-router-dom": "^7.18.4",
+    "sharp": "^0.35.5"
+  },
+  "devDependencies": {
+    "@testing-library/jest-dom": "^6.9.1",
+    "@testing-library/react": "^16.3.3",
+    "@testing-library/user-event": "^14.6.8",
+    "@vitejs/plugin-react": "^5.2.0",
+    "concurrently": "^9.2.5",
+    "jsdom": "^27.4.0",
+    "mongodb-memory-server": "^10.4.3",
+    "supertest": "^7.3.1",
+    "vite": "^7.3.7",
+    "vitest": "^4.1.12"
+  },
+  "config": {
+    "mongodbMemoryServer": {
+      "disablePostinstall": true
+    }
+  }
+}
