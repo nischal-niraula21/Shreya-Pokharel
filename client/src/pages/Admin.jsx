@@ -30,8 +30,10 @@ function OrderDetail({ order, csrf, connected, onClose, onUpdate, onError }) {
     if (busy) return;
     setBusy(true);
     try {
-      const result = await api(`/admin/orders/${order.id}/status`, { method: 'POST', csrf,
-        body: JSON.stringify({ status, paymentVerified: verified, reason }) });
+      const result = await api(`/admin/orders/${order.id}/status`, {
+        method: 'POST', csrf,
+        body: JSON.stringify({ status, paymentVerified: verified, reason })
+      });
       onUpdate(result.order);
     } catch (error) { onError(error); } finally { setBusy(false); }
   }
@@ -88,8 +90,6 @@ function PaymentSettings({ csrf, settings, onSaved, onError }) {
       <div className="form-field"><label className="field-label" htmlFor="qr-upload">Your payment QR image</label><input id="qr-upload" name="qr" type="file" accept="image/jpeg,image/png,image/webp" required /><p className="field-help">JPG, PNG or WebP, up to 5 MB. Upload a replacement to update the details above.</p></div>
       <button className="button button-primary" disabled={busy}>{busy ? 'Saving…' : settings.qr ? 'Replace payment QR' : 'Save payment QR'}</button>
     </form>
-    <section className="admin-section"><h3>Payment screenshot storage</h3><p>{settings.screenshotStorageConfigured ? 'Cloudinary is configured. New payment screenshots are stored as authenticated assets and opened through this admin panel.' : 'Cloudinary is not configured. Cash on delivery works; new QR checkouts stay unavailable until screenshot storage is connected.'}</p><p className="field-help">Set the Cloudinary credentials in the server environment. Keep the API secret out of React and the browser.</p></section>
-    <section className="admin-section"><h3>Email connection</h3><p>{settings.emailConnected ? `Connected to Resend. New-order notifications go to ${settings.adminEmail}.` : 'Resend is not connected. Orders and email requests are saved, but no emails are being sent.'}</p><p className="field-help">Connect email using the server environment settings when your sending domain is ready. API keys are never entered in the browser.</p></section>
   </section>;
 }
 export default function Admin() {
@@ -130,8 +130,8 @@ export default function Admin() {
       {checking ? <p className="section-description">Checking your session…</p> : !csrf ? <form className="login-form" onSubmit={login}>
         <p>Sign in to review orders and payment screenshots.</p><label className="field-label" htmlFor="admin-password">Admin password</label><input id="admin-password" type="password" className="form-control" autoComplete="current-password" value={password} onChange={event => setPassword(event.target.value)} required maxLength={256} /><button className="button button-primary" disabled={busy}>{busy ? 'Signing in…' : 'Sign in'}</button>
       </form> : <>
-        <div className="admin-toolbar"><div className="admin-tabs"><button className={tab === 'orders' ? 'active' : ''} type="button" onClick={() => { setTab('orders'); setSelected(null); setError(''); }}>Orders</button><button className={tab === 'settings' ? 'active' : ''} type="button" onClick={() => { setTab('settings'); setError(''); }}>Payment & email setup</button></div><button type="button" className="text-link" onClick={logout}>Sign out</button></div>
-        {settings && !settings.emailConnected && <p className="email-notice" role="status">Email is not connected yet. Orders are saved here; notifications and buyer confirmations remain queued.</p>}
+        <div className="admin-toolbar"><div className="admin-tabs"><button className={tab === 'orders' ? 'active' : ''} type="button" onClick={() => { setTab('orders'); setSelected(null); setError(''); }}>Orders</button><button className={tab === 'settings' ? 'active' : ''} type="button" onClick={() => { setTab('settings'); setError(''); }}>Payment settings</button></div><button type="button" className="text-link" onClick={logout}>Sign out</button></div>
+
         {tab === 'settings' ? settings ? <PaymentSettings csrf={csrf} settings={settings} onSaved={refreshAll} onError={onError} /> : <p>Loading settings…</p> : selected ? <OrderDetail key={selected.id} order={selected} csrf={csrf} connected={Boolean(settings?.emailConnected)} onClose={() => { setSelected(null); setError(''); }} onUpdate={order => { setSelected(order); setError(''); refreshAll(); }} onError={onError} /> : <>
           <div className="order-filters"><div className="form-field"><label htmlFor="order-filter">Status</label><select id="order-filter" className="form-control" value={status} onChange={event => { setStatus(event.target.value); setPage(1); }}><option value="received">Needs review</option><option value="confirmed">Confirmed</option><option value="rejected">Rejected</option><option value="">All orders</option></select></div><div className="form-field"><label htmlFor="payment-filter">Payment</label><select id="payment-filter" className="form-control" value={payment} onChange={event => { setPayment(event.target.value); setPage(1); }}><option value="">All methods</option><option value="cod">Cash on delivery</option><option value="qr">Pay using QR</option></select></div><button className="gallery-arrow" type="button" onClick={refreshAll} disabled={loading}>Refresh</button></div>
           <p className="field-help" role="status">{loading ? 'Loading orders…' : data ? `${data.total} matching orders · ${data.received} awaiting review` : ''}</p>
