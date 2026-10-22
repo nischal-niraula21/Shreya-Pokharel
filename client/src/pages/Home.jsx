@@ -1,6 +1,14 @@
 import { Link } from 'react-router-dom';
+import { useEffect } from 'react';
 import { PageMeta } from '../components/Layout.jsx';
 export default function Home() {
+  useEffect(() => {
+    fetch('/api/health', {
+      cache: 'no-store',
+    }).catch(() => {
+      // A failed warm-up must not interrupt the homepage.
+    });
+  }, []);
   return <>
     <PageMeta title={"And They Say It's Easy — a novel by Shreya Pokharel"} description={"And They Say It’s Easy, the debut novel by Shreya Pokharel. Explore the book, meet the author, and order your copy."} />
     <main id="main-content" tabIndex="-1">
