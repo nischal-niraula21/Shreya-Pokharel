@@ -1,17 +1,67 @@
 {
-    "$schema": "https://openapi.vercel.sh/vercel.json",
-    "framework": null,
-    "installCommand": "npm ci --include=dev",
-    "buildCommand": "npm run build",
-    "outputDirectory": "client/dist",
-    "rewrites": [
+  "$schema": "https://openapi.vercel.sh/vercel.json",
+  "framework": null,
+  "installCommand": "npm ci --include=dev",
+  "buildCommand": "npm run build",
+  "outputDirectory": "client/dist",
+  "rewrites": [
+    {
+      "source": "/api/:path*",
+      "destination": "https://shreya-bookshop-api.onrender.com/api/:path*"
+    },
+    {
+      "source": "/journey",
+      "destination": "/journey.html"
+    },
+    {
+      "source": "/writing",
+      "destination": "/writing.html"
+    },
+    {
+      "source": "/order",
+      "destination": "/order.html"
+    },
+    {
+      "source": "/admin",
+      "destination": "/admin.html"
+    }
+  ],
+  "redirects": [
+    {
+      "source": "/index.html",
+      "destination": "/",
+      "permanent": true
+    },
+    {
+      "source": "/journey.html",
+      "destination": "/journey",
+      "permanent": true
+    },
+    {
+      "source": "/writing.html",
+      "destination": "/writing",
+      "permanent": true
+    },
+    {
+      "source": "/order.html",
+      "destination": "/order",
+      "permanent": true
+    },
+    {
+      "source": "/admin.html",
+      "destination": "/admin",
+      "permanent": true
+    }
+  ],
+  "headers": [
+    {
+      "source": "/admin",
+      "headers": [
         {
-            "source": "/api/:path*",
-            "destination": "https://shreya-bookshop-api.onrender.com/api/:path*"
-        },
-        {
-            "source": "/(.*)",
-            "destination": "/index.html"
+          "key": "X-Robots-Tag",
+          "value": "noindex, nofollow"
         }
-    ]
+      ]
+    }
+  ]
 }

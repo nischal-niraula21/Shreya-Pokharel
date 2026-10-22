@@ -10,7 +10,7 @@
     "dev": "concurrently -k -n api,web \"npm:dev:server\" \"npm:dev:client\"",
     "dev:server": "node --env-file-if-exists=.env --watch server/index.mjs",
     "dev:client": "vite --config client/vite.config.js",
-    "build": "vite build --config client/vite.config.js",
+    "build": "vite build --config client/vite.config.js && node scripts/prerender.mjs",
     "start": "node --env-file-if-exists=.env server/index.mjs",
     "admin:password": "node --env-file-if-exists=.env scripts/set-password.mjs",
     "test": "npm run test:api && npm run test:ui",
