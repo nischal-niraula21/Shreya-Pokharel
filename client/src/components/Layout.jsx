@@ -1,5 +1,6 @@
 import { useEffect, useRef } from 'react';
 import { Link, NavLink, Outlet, useLocation } from 'react-router-dom';
+import ScrollReveal from './ScrollReveal.jsx';
 const links = [['/', 'The Book'], ['/journey', 'My Journey'], ['/writing', 'Writing']];
 export default function Layout() {
   const { pathname } = useLocation();
@@ -23,6 +24,7 @@ export default function Layout() {
         {links.map(([to, text]) => <NavLink key={to} className="nav-link" to={to} end>{text}</NavLink>)}
       </nav>
     </header>
+    <ScrollReveal />
     <Outlet />
     <footer className="site-footer"><div className="footer-inner">
       <p className="footer-quote">“Some stories are harder to tell than others.”</p>
