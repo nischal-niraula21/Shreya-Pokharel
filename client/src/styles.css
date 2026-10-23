@@ -1777,3 +1777,11 @@ input[type="file"]::file-selector-button {
     translate: none;
   }
 }
+
+.order-layout {
+  grid-template-columns: minmax(0, 1fr);
+  max-width: 760px;
+  margin-inline: auto;
+  gap: 0;
+  padding-block: 32px 48px;
+}

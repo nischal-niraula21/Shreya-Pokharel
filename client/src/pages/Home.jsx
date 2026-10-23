@@ -30,6 +30,7 @@ export default function Home() {
             <span className="cover-note cover-note-right">move on</span>
           </div>
         </div>
+        <p className="book-signature">signed with love, Shreya</p>
       </section>
       <section className="paper-section book-about">
         <div className="container section-space narrow text-center">
